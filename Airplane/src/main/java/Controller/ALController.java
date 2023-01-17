@@ -1,11 +1,13 @@
 package Controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -68,12 +70,22 @@ public class ALController extends HttpServlet {
 		case "/custInsert":
 			site = insertCustomer(request);
 			break;
-
-		case "/Reservation":
-			site = Reservation(request);
+			
+		case "/search":
+			site = searchName(request);
+			break;
+			
+		case "/delete":
+			site = deleteTickets(request);
+			break;
+			
+		case "/update":
+			site = searchName(request);
 			break;
 
-
+		case "/reservation":
+			site = "ariReservation.jsp";
+			break;
 		}
 
 		getServletContext().getRequestDispatcher("/" + site).forward(request, response);
@@ -101,52 +113,96 @@ public class ALController extends HttpServlet {
 
 	//비회원 고객 정보 저장
 	public String insertCustomer(HttpServletRequest request) {
-		CUSTOMERS customers = new CUSTOMERS();
-		CUSTOMERS insertCust;
-
-		try {
-			BeanUtils.populate(customers, request.getParameterMap());
 		
-			insertCust = dao.insertCustomer(customers);
+		CUSTOMERS customers = new CUSTOMERS();
+		CUSTOMERS sub = new CUSTOMERS();
 
-			request.setAttribute("insertCustomers", insertCust);
+		try {	
+			
+			customers.setCUST_NAME(request.getParameter("name"));
+			customers.setCUST_PHONE(request.getParameter("phone"));
+			customers.setPT_NO(request.getParameter("ticket_no"));
+			//고객 정보 저장
+			dao.insertCustomer(customers);
+			//티켓 예약 저장
+			dao.Reservation(customers);
+			
+			
+//			request.setAttribute("insertCustomers", insertCust);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return "Reservation";
+		return "ariReservation.jsp";
 	}
 
 	
 	//티켓 번호와 고객 번호를 예약 테이블에 저장
-	public String Reservation(HttpServletRequest request) {
+	public String searchName(HttpServletRequest request) {
 
-		CUSTOMERS customers = new CUSTOMERS();
+		List<RESERVATION> rList;
+		CUSTOMERS reservationName = new CUSTOMERS();
 
 		try {
-			BeanUtils.populate(customers, request.getParameterMap());
-			dao.Reservation(customers);
-			
+			reservationName.setCUST_NAME(request.getParameter("r_name"));
+//			BeanUtils.populate(reservationName, request.getParameterMap());
+			rList = dao.search(reservationName);
+			request.setAttribute("rList", rList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return "home";
+		return "ariReservation.jsp";
 	}
 
-//	public String insertReservations(HttpServletRequest request) {
-//		RESERVATIONS reservations = new RESERVATIONS();
-//		
-//		try {
-//		BeanUtils.populate(reservations, request.getParameterMap());
-//		dao.insert(reservations);
-//		
-//		} catch (Exception e) {
-//			 e.printStackTrace();
-//		}
-//		
-//		return "index2.jsp";
-//	}
 
+	
+	
+	
+	//티켓 및 비회원 정보 삭제
+	public String deleteTickets(HttpServletRequest request) {
+		
+		RESERVATION reservation = new RESERVATION();
+		int result;
+
+		try {	
+			
+			reservation.setCUST_NAME(request.getParameter("name"));
+			reservation.setCUST_PHONE(request.getParameter("phone"));
+			reservation.setCUST_NO(request.getParameter("ticket_no"));
+			reservation.setPT_NO(request.getParameter(""));
+			//고객 튜플 및 예약 튜플 삭제
+			result = dao.deleteTicekt(reservation);
+			request.setAttribute("resultDelete", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "ariReservation.jsp";
+	}
+	
+	
+	
+	
+	
+	//티켓 예약 한 비회원 연락처 변경
+	public String updateTicketPhone(HttpServletRequest request) {
+		
+		RESERVATION reservation = new RESERVATION();
+		int result;
+
+		try {	
+			
+			reservation.setCUST_NAME(request.getParameter("name"));
+			reservation.setCUST_PHONE(request.getParameter("phone"));
+			reservation.setCUST_NO(request.getParameter("custNo"));
+			//고객 튜플 및 예약 튜플 삭제
+			result = dao.updatePhone(reservation);
+			request.setAttribute("resultUpdate", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "ariReservation.jsp";
+	}
 }

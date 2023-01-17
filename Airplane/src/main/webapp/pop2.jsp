@@ -9,32 +9,30 @@
 <script src="Air.js" type="text/javascript"></script>
 </head>
 <%-- ref site https://creamilk88.tistory.com/104 --%>
-<body onunload="closePopup()">
+<body>
+<!-- onunload="closePopup()" -->
 	<%
 	String name = request.getParameter("name");
 	String phone = request.getParameter("phone");
 	String PT_no = request.getParameter("ticket_no");
 	%>
 
-
-
-
-	<form name="popupForm2" action="custInsert">
+	<form name="popupForm2" action="custInsert" method="get">
 		<p>
 			<strong>비회원 예약 확인</strong>
 		</p>
 		<p>
-			<label>성함:</label> <input type="text" readonly id="ticket_no2"
+			<label>성함:</label> <input type="text" readonly id="name"
 				name="name" value=<%=name%>>
 		</p>
 		<p>
-			<label>연락처: </label> <input type="text" readonly id="ticket_no"
+			<label>연락처: </label> <input type="text" readonly id="phone"
 				name="phone" value=<%=phone%>>
 		<p />
 		<label>티켓 번호:</label> <input type="text" readonly id="ticket_no"
 			name="ticket_no" value=<%=PT_no%>> <br>
 		<br>
-		<button type="submit" name="cust">예약 하기</button>
+		<button type="button" name="cust" onclick="closePopup()">예약 하기</button>
 
 	</form>
 	<%-- 

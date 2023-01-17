@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
 
 
 
-	<form name="popupForm" method="post" action="pop2.jsp?ticket_no=<%=PT_no%>">
+	<form name="popupForm" method="post" action="pop2.jsp?URLEncoder.encode(name,UTF-8)ticket_no=<%=PT_no%>">
 	<p><strong>비회원 예약</strong></p>
 	<p>
 	<label id="name" for="name">성함: </label>
