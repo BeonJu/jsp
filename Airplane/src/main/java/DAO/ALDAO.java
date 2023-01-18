@@ -106,8 +106,7 @@ public class ALDAO {
 				
 				ticketReservation.setPT_NO(customers.getPT_NO());
 				ticketReservation.setCUST_NO(rs.getString(1));
-				System.out.println("ticketReservation.getPT_no:"+ticketReservation.getPT_NO());
-				System.out.println("ticketReservation.getCust_no:"+ticketReservation.getCUST_NO());
+				
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -176,36 +175,17 @@ public class ALDAO {
 	
 	
 	
-	
-	public int deleteTicekt(RESERVATION reservation) throws SQLException{
+	//예약 티켓 삭제
+	public void deleteTicekt(RESERVATION reservation) throws SQLException{
 		RESERVATION reservation2 = new RESERVATION();
-		reservation2.setCUST_NO(reservation.getPT_NO());
+		reservation2.setCUST_NO(reservation.getCUST_NO());
 		reservation2.setCUST_NAME(reservation.getCUST_NAME());
 		reservation2.setCUST_PHONE(reservation.getCUST_PHONE());
 		reservation2.setPT_NO(reservation.getPT_NO());
-		int result = 0;
 		
-		//customer 정보 삭제
-		Connection conn = open();
-		String sql =  "DELETE FROM CUSTOMERS WHERE cust_no = "+"'"+reservation2.getCUST_NO()+"'";
-		sql += " and cust_name = "+"'"+reservation2.getCUST_NAME()+"'";
-		sql += " and cust_phone = "+"'"+reservation2.getCUST_PHONE()+"'";
-		PreparedStatement pr = conn.prepareStatement(sql);
-		//??
-		try(conn; pr) {
-			result = pr.executeUpdate();
-			if(result == 0) {
-				
-				conn.close();
-				pr.close();
-				
-				return result;}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			conn.close();
-			pr.close();
-		}
+		int result;
+		
+		
 		
 		//reservation 정보 삭제
 		Connection conn2 = open();
@@ -215,12 +195,7 @@ public class ALDAO {
 		
 		try(conn2; pr2) {
 			result = pr2.executeUpdate();
-			if(result == 0) {
-				
-				conn2.close();
-				pr2.close();
-				
-				return result;}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -228,9 +203,54 @@ public class ALDAO {
 			pr2.close();
 		}
 		
-		return result;
+		
+		//customer 정보 삭제
+		Connection conn = open();
+		String sql =  "DELETE FROM customers WHERE cust_no = "+"'"+reservation2.getCUST_NO()+"'";
+		PreparedStatement pr = conn.prepareStatement(sql);
+		
+		try(conn; pr) {
+			result = pr.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			conn.close();
+			pr.close();
+		}
+		
+		
+		
+
 	}
 	
+	
+	
+	public ArrayList<CUSTOMERS> getCustomerList(CUSTOMERS customers) throws SQLException {
+		Connection conn = open();
+		ArrayList<CUSTOMERS> cList = new ArrayList<CUSTOMERS>();
+
+		String sql = "SELECT cust_name, cust_phone FROM customers where cust_name = " + "'"+customers.getCUST_NAME()+"' and cust_phone = "+"'"+customers.getCUST_PHONE()+"'";
+		PreparedStatement pr = conn.prepareStatement(sql);
+		ResultSet rs = pr.executeQuery();
+
+		try (conn; pr; rs) {
+			while (rs.next()) {
+				CUSTOMERS customer = new CUSTOMERS();
+				customer.setCUST_NAME(rs.getString(1));
+				customer.setCUST_PHONE(rs.getString(2));
+				cList.add(customer);
+			}
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+			pr.close();
+			rs.close();
+		}
+		return cList;
+	}
 	
 	
 	public int updatePhone(RESERVATION reservation) throws SQLException {
@@ -240,6 +260,10 @@ public class ALDAO {
 		reservation2.setCUST_NAME(reservation.getCUST_NAME());
 		reservation2.setCUST_PHONE(reservation.getCUST_PHONE());
 		int result = 0;
+		
+		
+	
+		
 		
 		//customer 정보 수정
 		Connection conn = open();

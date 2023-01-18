@@ -24,14 +24,16 @@
 	<section>
 		<div class="Wrapper">
 			<div class="searcheWrapper">
-				<form name="searchFrom" action="search">
+				<form name="searchFrom" action="searchPhone">
 					<div class="way">
-						<span>항공권 예약</span>
+						<span>비회원 연락처 변경</span>
 					</div>
 					<div class="selectWrapper">
 						<label for="r_name">비회원 성함</label> <input type="text"
 							name="r_name" class="r-name" placeholder="성함 입력">
-						<button type="submit" name="searchSubmit">티켓 검색</button>
+							<label for="r_name">연락처</label> <input type="text"
+							name="r_phone" class="r-name" placeholder="연락처 입력">
+						<button type="submit" name="searchSubmit">검색</button>
 					</div>
 				</form>
 			</div>
@@ -39,39 +41,28 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Ticket.No</th>
-							<th>Customer.No</th>
 							<th>성함</th>
 							<th>연락처</th>
-							<th>항공사</th>
-							<th>출발 국가</th>
-							<th>도착 국가</th>
-							<th>출발 날자</th>
-							<th>도착 날자</th>
 							<th></th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 
-						<c:forEach var="reservationTicket" items="${rList}"
+						<c:forEach var="searchPhone" items="${cList}"
 							varStatus="status">
-							
+							<form name= "updatePhone" action="update" method="get">
 							<tr>
-							<form action="delete" method="get">
-								<td>${reservationTicket.PT_NO }</td>
-								<td>${reservationTicket.CUST_NO }</td>
-								<td>${reservationTicket.CUST_NAME }</td>
-								<td>${reservationTicket.CUST_PHONE }</td>
-								<td>${reservationTicket.AL_NAME }</td>
-								<td>${reservationTicket.START_COUNTRY}</td>
-								<td>${reservationTicket.END_COUNTRY }</td>
-								<td>${reservationTicket.START_DAY}</td>
-								<td>${reservationTicket.END_DAY}</td>
-								<td><button type="submit">티켓 취소하기</button></td>
-								</form>
-								<td><form action="update?name=${reservationTicket.CUST_NAME}&custNo=${reservationTicket.CUST_NO }" method="get" ><button type="submit" name="phone" value="">연락처 변경하기</button></form></td>
+								<input type="hidden" name="cust_name" value="${searchPhone.CUST_NAME  }">
+								<input type="hidden" name="cust_phone" value="${searchPhone.CUST_PHONE }">
+
+								<td>${searchPhone.CUST_NAME }</td>
+								<td>${searchPhone.CUST_PHONE }</td>
+								<td><input type="text" name="changePhone" placeholder="변경할 연락처를 입력하세요"></td>
+								<td><button type="submit">연락처 변경 하기</button></td>
+								
 							</tr>
+							</form>
 						</c:forEach>
 					</tbody>
 				</table>

@@ -79,12 +79,12 @@ public class ALController extends HttpServlet {
 			site = deleteTickets(request);
 			break;
 			
-		case "/update":
-			site = searchName(request);
+		case "/searchPhone":
+			site = searchPhone(request);
 			break;
-
+			
 		case "/reservation":
-			site = "ariReservation.jsp";
+			site = "airReservation.jsp";
 			break;
 		}
 
@@ -108,7 +108,7 @@ public class ALController extends HttpServlet {
 			request.setAttribute("error", "티켓 목록을 정상적으로 불러 오지못했습니다!");
 		}
 
-		return "ariMain.jsp";
+		return "airMain.jsp";
 	}
 
 	//비회원 고객 정보 저장
@@ -133,7 +133,7 @@ public class ALController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		return "ariReservation.jsp";
+		return "airReservation.jsp";
 	}
 
 	
@@ -153,7 +153,7 @@ public class ALController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		return "ariReservation.jsp";
+		return "airReservation.jsp";
 	}
 
 
@@ -164,22 +164,22 @@ public class ALController extends HttpServlet {
 	public String deleteTickets(HttpServletRequest request) {
 		
 		RESERVATION reservation = new RESERVATION();
-		int result;
+		
 
 		try {	
 			
-			reservation.setCUST_NAME(request.getParameter("name"));
-			reservation.setCUST_PHONE(request.getParameter("phone"));
-			reservation.setCUST_NO(request.getParameter("ticket_no"));
-			reservation.setPT_NO(request.getParameter(""));
+			reservation.setCUST_NAME(request.getParameter("cust_name"));
+			reservation.setCUST_PHONE(request.getParameter("cust_phone"));
+			reservation.setCUST_NO(request.getParameter("cust_no"));
+			reservation.setPT_NO(request.getParameter("pt_no"));
 			//고객 튜플 및 예약 튜플 삭제
-			result = dao.deleteTicekt(reservation);
-			request.setAttribute("resultDelete", result);
+			dao.deleteTicekt(reservation);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return "ariReservation.jsp";
+		return "airReservation.jsp";
 	}
 	
 	
@@ -187,22 +187,20 @@ public class ALController extends HttpServlet {
 	
 	
 	//티켓 예약 한 비회원 연락처 변경
-	public String updateTicketPhone(HttpServletRequest request) {
-		
-		RESERVATION reservation = new RESERVATION();
-		int result;
+	public String searchPhone(HttpServletRequest request) {
+		List<CUSTOMERS> cList;
+		CUSTOMERS customers = new CUSTOMERS();
 
 		try {	
-			
-			reservation.setCUST_NAME(request.getParameter("name"));
-			reservation.setCUST_PHONE(request.getParameter("phone"));
-			reservation.setCUST_NO(request.getParameter("custNo"));
+			customers.setCUST_NAME(request.getParameter("r_name"));
+			customers.setCUST_PHONE(request.getParameter("r_phone"));
+
 			//고객 튜플 및 예약 튜플 삭제
-			result = dao.updatePhone(reservation);
-			request.setAttribute("resultUpdate", result);
+			cList = dao.getCustomerList(customers);
+			request.setAttribute("cList", cList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "ariReservation.jsp";
+		return "airUpdate.jsp";
 	}
 }
