@@ -17,32 +17,14 @@
 	</div>
 	<nav>
 		<div class="menu">
-			<a href="home"><button class="btMenu">항공권 예약</button></a> 
+
 			<a href="list"><button class="btMenu">항공권 전체 조회</button></a>
 			<a href="reservation"><button class="btMenu">비회원 항공권 예약 조회</button></a>
+			<a href="changePhone"><button class="btMenu">비회원 연락처 변경</button></a>
 		</div>
 	</nav>
 	<section>
 		<div class="Wrapper">
-			<div class="searcheWrapper">
-				<form name="searchFrom" action="search">
-					<div class="way">
-						<span>항공권 예약</span>
-					</div>
-					<div class="selectWrapper">
-						<select name="startCountry">
-							<option value=""></option>
-							<option value="김포">김포</option>
-						</select> <select name="endCountry">
-							<option value=""></option>
-							<option value="제주">제주</option>
-							<option value="오키나와">오키나와</option>
-							<option value="삿포로">삿포로</option>
-						</select>
-						<button type="submit" name="searchSubmit">티켓 검색</button>
-					</div>
-				</form>
-			</div>
 			<div class="searchList">
 			
 				<table>

@@ -16,9 +16,10 @@
 	</div>
 	<nav>
 		<div class="menu">
-			<a href="home"><button class="btMenu">항공권 예약</button></a> <a
-				href="list"><button class="btMenu">항공권 전체 조회</button></a> <a
+			
+				<a href="list"><button class="btMenu">항공권 전체 조회</button></a> <a
 				href="reservation"><button class="btMenu">비회원 항공권 예약 조회</button></a>
+				<a href="changePhone"><button class="btMenu">비회원 연락처 변경</button></a>
 		</div>
 	</nav>
 	<section>

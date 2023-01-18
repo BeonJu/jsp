@@ -13,6 +13,7 @@ import DTO.CUSTOMERS;
 import DTO.RESERVATION;
 import DTO.RESERVATIONS;
 import DTO.TICKETS;
+import DTO.UPDATEPHONE;
 
 public class ALDAO {
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -58,9 +59,10 @@ public class ALDAO {
 		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
 			pr.close();
 			rs.close();
+			conn.close();
+			
 		}
 		return tlist;
 	}
@@ -84,8 +86,9 @@ public class ALDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
 			pr.close();
+			conn.close();
+			
 		}
 	}
 
@@ -110,9 +113,10 @@ public class ALDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			conn.close();
 			pr.close();
 			rs.close();
+			conn.close();
+			
 		}
 		
 		Connection conn2 = open();
@@ -127,8 +131,9 @@ public class ALDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			conn2.close();
 			pr2.close();
+			conn2.close();
+			
 		}
 	
 	}
@@ -165,9 +170,10 @@ public class ALDAO {
 		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
 			pr.close();
 			rs.close();
+			conn.close();
+			
 		}
 		return Rlist;
 	}
@@ -199,8 +205,9 @@ public class ALDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			conn2.close();
 			pr2.close();
+			conn2.close();
+			
 		}
 		
 		
@@ -214,8 +221,9 @@ public class ALDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			conn.close();
 			pr.close();
+			conn.close();
+			
 		}
 		
 		
@@ -245,51 +253,43 @@ public class ALDAO {
 		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
 			pr.close();
 			rs.close();
+			conn.close();
+			
 		}
 		return cList;
 	}
 	
 	
-	public int updatePhone(RESERVATION reservation) throws SQLException {
-	
-		RESERVATION reservation2 = new RESERVATION();
-		reservation2.setCUST_NO(reservation.getPT_NO());
-		reservation2.setCUST_NAME(reservation.getCUST_NAME());
-		reservation2.setCUST_PHONE(reservation.getCUST_PHONE());
-		int result = 0;
-		
-		
+	public void updatePhone(UPDATEPHONE updatephone) throws SQLException {
 	
 		
-		
-		//customer 정보 수정
+		String name = updatephone.getCUST_NAME();
+		String bePhone = updatephone.getCUST_BEPHONE();
+		String bfPHone = updatephone.getCUST_AFPHONE();
+
+		//customer phone 정보 수정
 		Connection conn = open();
 		String sql =  "UPDATE CUSTOMERS SET cust_phone = ? "; 
-		sql += "where cust_no = " + "'" + reservation2.getCUST_NO() + "'";
-		sql += " and cust_name = " + "'" + reservation2.getCUST_NAME() + "'";
+		sql += " where cust_name = " + "'" + name + "'";
+		sql += " and cust_phone = " + "'" + bePhone + "'";
 		
 		PreparedStatement pr = conn.prepareStatement(sql);
 		
 		try(conn; pr) {
-			pr.setString(1, reservation2.getCUST_PHONE());
-			result = pr.executeUpdate();
-			if(result == 0) {
-				
-				conn.close();
-				pr.close();
-				
-				return result;}
+			pr.setString(1, bfPHone);
+			pr.executeUpdate();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			conn.close();
 			pr.close();
+			conn.close();
+			
 		}
 		
-		return result;
+
 	}
 
 }

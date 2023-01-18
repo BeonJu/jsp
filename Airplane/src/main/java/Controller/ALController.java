@@ -21,6 +21,7 @@ import DTO.CUSTOMERS;
 import DTO.RESERVATION;
 import DTO.RESERVATIONS;
 import DTO.TICKETS;
+import DTO.UPDATEPHONE;
 
 @WebServlet("/")
 public class ALController extends HttpServlet {
@@ -60,9 +61,6 @@ public class ALController extends HttpServlet {
 		String site = null; // 서블릿 주소 뒤에 넣어줄 URL
 
 		switch (command) {
-		case "/home":
-			site = getList(request);
-			break;
 
 		case "/list":
 			site = getList(request);
@@ -79,12 +77,16 @@ public class ALController extends HttpServlet {
 			site = deleteTickets(request);
 			break;
 			
-		case "/searchPhone":
+		case "/updatePhone":
 			site = searchPhone(request);
 			break;
 			
 		case "/reservation":
 			site = "airReservation.jsp";
+			break;
+			
+		case "/changePhone":
+			site = "airUpdate.jsp";
 			break;
 		}
 
@@ -184,20 +186,20 @@ public class ALController extends HttpServlet {
 	
 	
 	
-	
-	
+
 	//티켓 예약 한 비회원 연락처 변경
 	public String searchPhone(HttpServletRequest request) {
-		List<CUSTOMERS> cList;
-		CUSTOMERS customers = new CUSTOMERS();
+		
+		UPDATEPHONE updatephone = new UPDATEPHONE();
 
 		try {	
-			customers.setCUST_NAME(request.getParameter("r_name"));
-			customers.setCUST_PHONE(request.getParameter("r_phone"));
+			updatephone.setCUST_NAME(request.getParameter("r_name"));
+			updatephone.setCUST_BEPHONE(request.getParameter("r_bephone"));
+			updatephone.setCUST_AFPHONE(request.getParameter("r_afphone"));
 
 			//고객 튜플 및 예약 튜플 삭제
-			cList = dao.getCustomerList(customers);
-			request.setAttribute("cList", cList);
+			dao.updatePhone(updatephone);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
